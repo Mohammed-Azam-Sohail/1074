@@ -1,0 +1,23 @@
+name: Docker Build with Cache
+on:
+        push:
+                - branches:
+                        - main
+        pull_request:
+                - branches:
+                        - main
+                                                          
+jobs:
+        job:
+                runs-on: ubuntu-latest
+                steps:
+                        - name: checkout
+                          uses: actions/checkout@v4     
+                        - name: dock buil
+                          uses: docker/build-push-action@v4
+                        - name: image
+                          uses: docker/build-push-action@v4
+                          with:
+                                  context: .
+                                  cache-from: type=registry,ref=nginx:buildcache
+                                  cache-to: type=registry,ref=nginx:buildcache,mode=max
